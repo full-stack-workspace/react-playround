@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pkill:*)",
+      "Bash(npm create vite@latest:*)",
+      "Bash(npm install -D typescript ts-node @types/node @vitejs/plugin-react postcss autoprefixer tailwindcss)",
+      "Bash(npx tailwindcss init -p)",
+      "Bash(node_modules/.bin/tailwindcss init:*)",
+      "Bash(npx tailwindcss@latest init:*)",
+      "Bash(npm install -D sass)",
+      "Bash(npm install antd)",
+      "Bash(npm install -D tailwindcss@latest postcss@latest autoprefixer@latest)",
+      "Bash(npx --prefix node_modules tailwindcss init:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm install:*)",
+      "Bash(npm install)",
+      "Bash(cat:*)",
+      "Bash(npm run dev:*)",
+      "Bash(rm:*)",
+      "Bash(pnpm run dev --no-open)",
+      "Bash(kill:*)",
+      "Bash(touch:*)",
+      "Bash(pnpm run build)",
+      "Bash(mkdir:*)",
+      "Bash(pnpm run preview)"
+    ]
+  }
+}
