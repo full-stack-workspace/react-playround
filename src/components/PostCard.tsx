@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface PostCardProps {
   title: string;
@@ -7,7 +7,7 @@ interface PostCardProps {
   tags: string[];
 }
 
-const PostCard: React.FC<PostCardProps> = ({ title, excerpt, date, tags }) => {
+const PostCard: React.FC<PostCardProps> = memo(({ title, excerpt, date, tags }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-center text-sm text-gray-500 mb-4">
@@ -29,6 +29,9 @@ const PostCard: React.FC<PostCardProps> = ({ title, excerpt, date, tags }) => {
       </div>
     </div>
   );
-};
+});
+
+// 为使用 memo 的组件添加 displayName,方便在开发工具中调试
+PostCard.displayName = 'PostCard';
 
 export default PostCard;
