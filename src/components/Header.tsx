@@ -10,7 +10,7 @@ const Header: React.FC = memo(() => {
             <a href="/" className="text-gray-700 hover:text-gray-900 font-medium">Home</a>
             <a href="/posts" className="text-gray-700 hover:text-gray-900 font-medium">Posts</a>
             <a href="/shopping-cart" className="text-gray-700 hover:text-gray-900 font-medium">Shopping Cart</a>
-            <a href="/about" className="text-gray-700 hover:text-gray-900 font-medium">About</a>
+            <a href="/relay-example" className="text-gray-700 hover:text-gray-900 font-medium">Relay Example</a>
           </nav>
         </div>
       </div>

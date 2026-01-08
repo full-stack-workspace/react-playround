@@ -13,7 +13,7 @@ const Category: React.FC<{ category: string }> = ({ category }) => {
 }
 
 // 商品项组件
-const ProductItem: React.FC<ProductItem> = ({ name, price, stock }) => {
+const ProductItemComponent: React.FC<ProductItem> = ({ name, price, stock }) => {
     return (
         <div className="bg-white shadow-md rounded-lg p-4 flex items-center justify-between">
             <div className="flex items-center">
@@ -56,7 +56,7 @@ export const ProductList: React.FC<{ products: ProductItem[] }> = ({ products })
                 <div key={category} className="space-y-2">
                     <Category category={category} />
                     {productList.map((product, index) => (
-                        <ProductItem key={index} {...product} />
+                        <ProductItemComponent key={index} {...product} />
                     ))}
                 </div>
             ))}

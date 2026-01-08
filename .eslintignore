@@ -1,0 +1,26 @@
+# 依赖目录
+node_modules/
+
+# 构建输出
+dist/
+build/
+.rsbuild/
+
+# 生成的代码
+**/__generated__/
+
+# 公共资源
+public/
+
+# 配置文件
+*.config.js
+*.config.ts
+postcss.config.js
+tailwind.config.js
+rsbuild.config.ts
+
+# 其他
+coverage/
+*.min.js
+.DS_Store
+
