@@ -7,7 +7,8 @@ import React, { memo } from 'react';
 
 interface PostCardProps {
     title: string;
-    excerpt: string;
+    description: string;
+    link: string;
     date: string;
     tags: string[];
 }
@@ -19,10 +20,9 @@ interface PostCardProps {
  * @param {string} excerpt - 文章摘要
  * @param {string} date - 文章日期
  * @param {string[]} tags - 文章标签
- *
  * @returns {React.ReactNode} 返回一个博客文章卡片组件
  */
-const PostCard: React.FC<PostCardProps> = memo(({ title, excerpt, date, tags }) => {
+const PostCard: React.FC<PostCardProps> = memo(({ title, description, link, date, tags }) => {
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -32,7 +32,7 @@ const PostCard: React.FC<PostCardProps> = memo(({ title, excerpt, date, tags }) 
             <h2 className="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 cursor-pointer">
                 {title}
             </h2>
-            <p className="text-gray-700 mb-4 line-clamp-3">{excerpt}</p>
+            <p className="text-gray-700 mb-4 line-clamp-3">{description}</p>
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
                     <span

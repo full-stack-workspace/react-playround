@@ -25,5 +25,14 @@
     // 用于检查是否存在未使用的参数，可以配合 eslint 做提示
     "noUnusedParameters": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "vitest.config.ts",
+    "src/vitest.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/__generated__/**"]
 }

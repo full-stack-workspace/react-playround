@@ -93,7 +93,9 @@ export default [
       'react/react-in-jsx-scope': 'off', // React 17+ 不需要导入 React
       'react/prop-types': 'off', // TypeScript 已经处理了类型检查
       'react/display-name': 'warn',
+      // 确保 React Hooks 规则在 React 组件中正确使用
       'react-hooks/rules-of-hooks': 'error',
+      // 检查 React Hooks 的依赖项是否正确
       'react-hooks/exhaustive-deps': 'warn',
     },
   },
@@ -112,6 +114,19 @@ export default [
     },
   },
 
+  // 测试文件配置（更宽松的规则）
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/test/**/*.{ts,tsx}'],
+    rules: {
+      // 测试文件中允许使用 console
+      'no-console': 'off',
+      // 测试文件中允许使用 any（测试场景）
+      '@typescript-eslint/no-explicit-any': 'off',
+      // 测试文件中允许使用非空断言
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
+
   // 忽略文件配置
   {
     ignores: [
@@ -125,6 +140,7 @@ export default [
       'public/**',
       '*.min.js',
       'coverage/**',
+      '.vitest/**',
     ],
   },
 ];

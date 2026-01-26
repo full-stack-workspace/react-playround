@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import PostCard from '../components/PostCard';
+import PostCard from '../components/Card';
 
 const Posts: React.FC = () => {
   const allPosts = [

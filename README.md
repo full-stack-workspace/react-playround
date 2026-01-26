@@ -1,8 +1,8 @@
 # react-playground
 
-A React-based development playground built with **TypeScript**, integrated with **SCSS**, **Tailwind CSS**, and **Ant Design** for UI development. It adopts **pnpm** as the package manager and **Rsbuild** as the build tool.
+A modern React development playground, leveraging **TypeScript** for type safety, and seamlessly integrating **SCSS**, **Tailwind CSS**, and **Ant Design** for robust UI development. The project uses **pnpm** for efficient package management and **Rsbuild** for fast and flexible builds.
 
-This repository is **co-created by AI coding tools and human developers**, primarily for **testing and validating the Vibe coding workflow**.
+This repository is **collaboratively maintained by AI coding tools and human developers, with a primary focus on testing and validating the Vibe coding workflow**.
 
 ## Setup
 
