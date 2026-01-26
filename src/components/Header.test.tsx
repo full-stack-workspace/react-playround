@@ -22,7 +22,7 @@ describe('Header', () => {
 
     // 检查导航链接是否存在
     expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Posts')).toBeInTheDocument();
+    expect(screen.getByText('Hooks')).toBeInTheDocument();
     expect(screen.getByText('Shopping Cart')).toBeInTheDocument();
     expect(screen.getByText('Relay Example')).toBeInTheDocument();
   });
@@ -31,12 +31,12 @@ describe('Header', () => {
     render(<Header />);
 
     const homeLink = screen.getByRole('link', { name: /home/i });
-    const postsLink = screen.getByRole('link', { name: /posts/i });
+    const hooksLink = screen.getByRole('link', { name: /hooks/i });
     const shoppingCartLink = screen.getByRole('link', { name: /shopping cart/i });
     const relayExampleLink = screen.getByRole('link', { name: /relay example/i });
 
     expect(homeLink).toHaveAttribute('href', '/');
-    expect(postsLink).toHaveAttribute('href', '/posts');
+    expect(hooksLink).toHaveAttribute('href', '/hooks');
     expect(shoppingCartLink).toHaveAttribute('href', '/shopping-cart');
     expect(relayExampleLink).toHaveAttribute('href', '/relay-example');
   });
