@@ -11,6 +11,7 @@ import Posts from './pages/Posts';
 import { ShoppingCart } from './pages/ShoppingCart';
 import RelayExample from './pages/RelayExample';
 import Todo from './pages/Todo';
+import Bookkeeping from './pages/Bookkeeping';
 import './index.css';
 
 import { Loading } from './components/Loading';
@@ -52,7 +53,7 @@ const AppContent = () => {
                             <p className="text-xs text-gray-400 -mt-1">Build & Experiment</p>
                         </div>
                     </div>
-                    
+
                     {/* Main navigation */}
                     <Menu
                         mode="horizontal"
@@ -62,7 +63,7 @@ const AppContent = () => {
                         style={{ background: 'transparent' }}
                     />
                 </Header>
-                
+
                 <Layout className="mt-0">
                     {/* Sidebar with improved styling */}
                     <Sider
@@ -83,7 +84,7 @@ const AppContent = () => {
                                     </h2>
                                 </div>
                             )}
-                            
+
                             {/* Sidebar menu */}
                             <div className="flex-1 overflow-auto py-2">
                                 <Menu
@@ -94,16 +95,16 @@ const AppContent = () => {
                                     defaultOpenKeys={['/']}
                                 />
                             </div>
-                            
+
                             {/* Collapse toggle button */}
-                            <div 
+                            <div
                                 className="p-3 border-t border-gray-100 flex justify-center cursor-pointer hover:bg-gray-50 transition-colors"
                                 onClick={() => setCollapsed(!collapsed)}
                             >
-                                <svg 
-                                    className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${collapsed ? 'rotate-180' : ''}`} 
-                                    fill="none" 
-                                    stroke="currentColor" 
+                                <svg
+                                    className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${collapsed ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -111,7 +112,7 @@ const AppContent = () => {
                             </div>
                         </div>
                     </Sider>
-                    
+
                     {/* Main content area */}
                     <Content className="m-4 p-6 bg-white/60 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 min-h-[calc(100vh-8rem)]">
                         <div className="h-full">
@@ -123,6 +124,7 @@ const AppContent = () => {
                                         <Route path="/shopping-cart" element={<ShoppingCart />} />
                                         <Route path="/relay-example" element={<RelayExample />} />
                                         <Route path="/todo" element={<Todo />} />
+                                        <Route path="/bookkeeping" element={<Bookkeeping />} />
                                     </Routes>
                                 </AppErrorBoundary>
                             </Suspense>
