@@ -88,5 +88,18 @@ describe('SummaryCards', () => {
             const incomeCard = screen.getByText('总收入').closest('div[class*="rounded"]')!;
             expect(incomeCard).toHaveTextContent('12,345.60');
         });
+
+        it('支出大于收入时余额为负数，应正确格式化显示', () => {
+            render(
+                <SummaryCards
+                    totalIncome={500}
+                    totalExpense={1200}
+                    balance={-700}
+                />,
+            );
+            const balanceCard = screen.getByText('余额').closest('div[class*="rounded"]')!;
+            // 余额为负时 toLocaleString 会添加负号前缀
+            expect(balanceCard).toHaveTextContent('-700.00');
+        });
     });
 });

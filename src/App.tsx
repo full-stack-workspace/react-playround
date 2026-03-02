@@ -12,6 +12,7 @@ import { ShoppingCart } from './pages/ShoppingCart';
 import RelayExample from './pages/RelayExample';
 import Todo from './pages/Todo';
 import Bookkeeping from './pages/Bookkeeping';
+import AppExample from './pages/AppExample';
 import './index.css';
 
 import { Loading } from './components/Loading';
@@ -28,11 +29,38 @@ import {
 
 import type { MenuProps } from 'antd';
 
+// 获取匹配路径
+const matchActiveNavKey = (navKeys: string[], pathname: string) => {
+    if (!navKeys.length) {
+        return '';
+    }
+    return navKeys
+        .filter(key => {
+            if (key === '/') {
+                return pathname === '/';
+            }
+            // 匹配路径是否完全相等或以指定路径开头
+            return pathname === key || pathname.startsWith(key + '/');
+        })
+        // 按路径长度降序排序，返回最长的匹配路径
+        // 如果没有任何匹配，则返回空字符串
+        .sort((a, b) => b.length - a.length)[0] || '';
+};
+
 const AppContent = () => {
     const location = useLocation();
     const [collapsed, setCollapsed] = useState(false);
 
-    const secondaryNavItems = sideNavItems[location.pathname] || [];
+    // 获取主导航的匹配路径
+    const activeMainNavKey = matchActiveNavKey(
+        mainNavItems.map(item => item.key as string),
+        location.pathname
+    ) || location.pathname;
+
+    // 获取二级导航的匹配路径
+    const matchingKey = matchActiveNavKey(Object.keys(sideNavItems), location.pathname);
+    // 获取二级导航的菜单项
+    const secondaryNavItems = matchingKey ? sideNavItems[matchingKey] : [];
 
     return (
         <Suspense fallback={<Loading />}>
@@ -57,7 +85,7 @@ const AppContent = () => {
                     {/* Main navigation */}
                     <Menu
                         mode="horizontal"
-                        selectedKeys={[location.pathname]}
+                        selectedKeys={[activeMainNavKey]}
                         items={mainNavItems as MenuProps['items']}
                         className="border-0 bg-transparent flex-1 justify-end min-w-0"
                         style={{ background: 'transparent' }}
@@ -121,10 +149,11 @@ const AppContent = () => {
                                     <Routes>
                                         <Route path="/" element={<Home />} />
                                         <Route path="/hooks" element={<Posts />} />
-                                        <Route path="/shopping-cart" element={<ShoppingCart />} />
-                                        <Route path="/relay-example" element={<RelayExample />} />
-                                        <Route path="/todo" element={<Todo />} />
-                                        <Route path="/bookkeeping" element={<Bookkeeping />} />
+                                        <Route path="/app-example" element={<AppExample />} />
+                                        <Route path="/app-example/shopping-cart" element={<ShoppingCart />} />
+                                        <Route path="/app-example/relay-example" element={<RelayExample />} />
+                                        <Route path="/app-example/todo" element={<Todo />} />
+                                        <Route path="/app-example/bookkeeping" element={<Bookkeeping />} />
                                     </Routes>
                                 </AppErrorBoundary>
                             </Suspense>

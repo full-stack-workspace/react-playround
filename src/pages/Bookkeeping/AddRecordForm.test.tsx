@@ -2,22 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '../../test/utils';
 import { AddRecordForm } from './AddRecordForm';
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from './types';
-
-/**
- * Ant Design v6 Select helper: opens the dropdown by clicking on the
- * select's trigger area, then picks the option by title attribute.
- */
-async function selectOption(container: HTMLElement, index: number, optionTitle: string) {
-    const selects = container.querySelectorAll<HTMLElement>('.ant-select');
-    const target = selects[index];
-    fireEvent.mouseDown(target.querySelector('.ant-select-content')!);
-
-    await waitFor(() => {
-        const option = document.querySelector(`.ant-select-item[title="${optionTitle}"]`);
-        expect(option).toBeTruthy();
-        fireEvent.click(option!);
-    });
-}
+import { selectAntdOption } from '../../test/antdHelpers';
 
 describe('AddRecordForm', () => {
     const mockOnAdd = vi.fn();
@@ -71,7 +56,7 @@ describe('AddRecordForm', () => {
         it('当类型切换为"收入"时，分类下拉应切换为收入分类列表', async () => {
             const { container } = render(<AddRecordForm onAdd={mockOnAdd} />);
 
-            await selectOption(container, 0, '收入');
+            await selectAntdOption(container, 0, '收入');
 
             const selects = container.querySelectorAll<HTMLElement>('.ant-select');
             fireEvent.mouseDown(selects[1].querySelector('.ant-select-content')!);
@@ -114,7 +99,7 @@ describe('AddRecordForm', () => {
             const { container } = render(<AddRecordForm onAdd={mockOnAdd} />);
 
             fireEvent.change(screen.getByPlaceholderText('金额'), { target: { value: '50' } });
-            await selectOption(container, 1, EXPENSE_CATEGORIES[0]);
+            await selectAntdOption(container, 1, EXPENSE_CATEGORIES[0]);
             fireEvent.change(screen.getByPlaceholderText('备注（可选）'), { target: { value: '测试备注' } });
             fireEvent.click(screen.getByRole('button', { name: /添加/ }));
 
@@ -133,7 +118,7 @@ describe('AddRecordForm', () => {
             const { container } = render(<AddRecordForm onAdd={mockOnAdd} />);
 
             fireEvent.change(screen.getByPlaceholderText('金额'), { target: { value: '200' } });
-            await selectOption(container, 1, EXPENSE_CATEGORIES[1]);
+            await selectAntdOption(container, 1, EXPENSE_CATEGORIES[1]);
             fireEvent.click(screen.getByRole('button', { name: /添加/ }));
 
             await waitFor(() => {
@@ -148,6 +133,28 @@ describe('AddRecordForm', () => {
             expect(record).toHaveProperty('description');
             expect(record).toHaveProperty('date');
             expect(record.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        });
+
+        it('提交成功后表单应重置：金额清空、分类回到占位提示', async () => {
+            const { container } = render(<AddRecordForm onAdd={mockOnAdd} />);
+
+            fireEvent.change(screen.getByPlaceholderText('金额'), { target: { value: '88' } });
+            await selectAntdOption(container, 1, EXPENSE_CATEGORIES[0]);
+            fireEvent.change(screen.getByPlaceholderText('备注（可选）'), {
+                target: { value: '要重置的备注' },
+            });
+            fireEvent.click(screen.getByRole('button', { name: /添加/ }));
+
+            await waitFor(() => {
+                expect(mockOnAdd).toHaveBeenCalledTimes(1);
+            });
+
+            // 提交后：金额输入框应清空，分类选择器应回到占位提示
+            await waitFor(() => {
+                expect(screen.getByPlaceholderText('金额')).toHaveValue('');
+                expect(screen.getByText('选择分类')).toBeInTheDocument();
+                expect(screen.getByPlaceholderText('备注（可选）')).toHaveValue('');
+            });
         });
     });
 });

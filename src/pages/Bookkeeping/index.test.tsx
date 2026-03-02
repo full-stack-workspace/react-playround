@@ -1,33 +1,38 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '../../test/utils';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor, act } from '../../test/utils';
 import Bookkeeping from './index';
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES, STORAGE_KEY } from './types';
-import type { BookkeepingRecord } from './types';
+import type { BookkeepingRecord, DateRange } from './types';
+import { selectAntdOption } from '../../test/antdHelpers';
+import dayjs from 'dayjs';
+import type { RecordTableProps } from './RecordTable';
 
-async function selectOption(container: HTMLElement, index: number, optionTitle: string) {
-    const selects = container.querySelectorAll<HTMLElement>('.ant-select');
-    const target = selects[index];
-    fireEvent.mouseDown(target.querySelector('.ant-select-content')!);
+// 捕获 RecordTable 传入的 onDateRangeChange 回调，供日期区间筛选测试直接调用
+let capturedOnDateRangeChange: ((range: DateRange) => void) | null = null;
 
-    await waitFor(() => {
-        const option = document.querySelector(`.ant-select-item[title="${optionTitle}"]`);
-        expect(option).toBeTruthy();
-        fireEvent.click(option!);
-    });
-}
+vi.mock('./RecordTable', async () => {
+    const actual = await vi.importActual<typeof import('./RecordTable')>('./RecordTable');
+    const { RecordTable: OrigRecordTable } = actual;
+
+    function WrappedRecordTable(props: RecordTableProps) {
+        capturedOnDateRangeChange = props.onDateRangeChange;
+        return <OrigRecordTable {...props} />;
+    }
+
+    return { ...actual, RecordTable: WrappedRecordTable };
+});
 
 async function addRecord(
     container: HTMLElement,
     opts: { type?: 'income' | 'expense'; amount: string; category: string; description?: string },
 ) {
     if (opts.type === 'income') {
-        await selectOption(container, 0, '收入');
+        await selectAntdOption(container, 0, '收入');
     }
 
     fireEvent.change(screen.getByPlaceholderText('金额'), { target: { value: opts.amount } });
 
-    const categorySelectIndex = opts.type === 'income' ? 1 : 1;
-    await selectOption(container, categorySelectIndex, opts.category);
+    await selectAntdOption(container, 1, opts.category);
 
     if (opts.description) {
         fireEvent.change(screen.getByPlaceholderText('备注（可选）'), {
@@ -173,6 +178,83 @@ describe('Bookkeeping 页面集成测试', () => {
 
             const expenseCard = screen.getByText('总支出').closest('div[class*="rounded"]')!;
             expect(expenseCard).toHaveTextContent('0.00');
+        });
+    });
+
+    describe('日期区间筛选', () => {
+        const crossMonthRecords: BookkeepingRecord[] = [
+            {
+                id: 'f-1',
+                type: 'income',
+                amount: 5000,
+                category: '工资',
+                description: '三月工资',
+                date: '2025-03-15',
+            },
+            {
+                id: 'f-2',
+                type: 'expense',
+                amount: 200,
+                category: '餐饮',
+                description: '三月餐饮',
+                date: '2025-03-10',
+            },
+            {
+                id: 'f-3',
+                type: 'income',
+                amount: 3000,
+                category: '兼职',
+                description: '二月收入',
+                date: '2025-02-10',
+            },
+        ];
+
+        it('设置日期区间后，汇总数据应仅反映区间内记录', async () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(crossMonthRecords));
+            render(<Bookkeeping />);
+
+            // 初始状态：全部记录汇总（收入 5000 + 3000 = 8000，支出 200）
+            const incomeCardBefore = screen.getByText('总收入').closest('div[class*="rounded"]')!;
+            expect(incomeCardBefore).toHaveTextContent('8,000.00');
+
+            // 设置日期区间为 2025-03-01 ~ 2025-03-31，仅包含两条三月记录
+            act(() => {
+                capturedOnDateRangeChange?.([dayjs('2025-03-01'), dayjs('2025-03-31')]);
+            });
+
+            await waitFor(() => {
+                const incomeCard = screen.getByText('总收入').closest('div[class*="rounded"]')!;
+                expect(incomeCard).toHaveTextContent('5,000.00'); // 只有三月工资
+                const expenseCard = screen.getByText('总支出').closest('div[class*="rounded"]')!;
+                expect(expenseCard).toHaveTextContent('200.00'); // 只有三月餐饮
+                const balanceCard = screen.getByText('余额').closest('div[class*="rounded"]')!;
+                expect(balanceCard).toHaveTextContent('4,800.00'); // 5000 - 200
+            });
+        });
+
+        it('清除日期区间后，汇总数据应恢复为全部记录', async () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(crossMonthRecords));
+            render(<Bookkeeping />);
+
+            // 先设置日期区间（只包含三月记录）
+            act(() => {
+                capturedOnDateRangeChange?.([dayjs('2025-03-01'), dayjs('2025-03-31')]);
+            });
+
+            await waitFor(() => {
+                const incomeCard = screen.getByText('总收入').closest('div[class*="rounded"]')!;
+                expect(incomeCard).toHaveTextContent('5,000.00');
+            });
+
+            // 清除日期区间，应恢复全部记录
+            act(() => {
+                capturedOnDateRangeChange?.(null);
+            });
+
+            await waitFor(() => {
+                const incomeCard = screen.getByText('总收入').closest('div[class*="rounded"]')!;
+                expect(incomeCard).toHaveTextContent('8,000.00'); // 5000 + 3000
+            });
         });
     });
 });

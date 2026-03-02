@@ -15,7 +15,11 @@ import { vi } from 'vitest';
  * @returns 渲染结果和工具函数
  */
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return <BrowserRouter>{children}</BrowserRouter>;
+  return (
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      {children}
+    </BrowserRouter>
+  );
 };
 
 const customRender = (

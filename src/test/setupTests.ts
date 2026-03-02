@@ -16,6 +16,16 @@ afterEach(() => {
   cleanup();
 });
 
+// Mock window.getComputedStyle（Ant Design Table 通过 measureScrollbarSize 调用带伪元素参数的版本，
+// 但 jsdom 未实现该重载，会在 stderr 产生大量 "Not implemented" 错误）
+const _originalGetComputedStyle = window.getComputedStyle;
+window.getComputedStyle = (elt: Element, pseudoElt?: string | null) => {
+  if (pseudoElt) {
+    return { getPropertyValue: () => '' } as CSSStyleDeclaration;
+  }
+  return _originalGetComputedStyle(elt);
+};
+
 // Mock window.matchMedia（某些组件库如 Ant Design 需要）
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

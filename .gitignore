@@ -44,3 +44,9 @@ coverage/
 
 # Vitest
 .vitest/
+
+# worktrees
+.claude/worktrees
+.opencode/worktrees
+.cursor/worktrees
+.vscode/worktrees

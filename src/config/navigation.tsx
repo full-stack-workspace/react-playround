@@ -14,10 +14,11 @@ enum NavPathKey {
     Hooks = '/hooks',
     useState = '/hooks/useState',
     useEffect = '/hooks/useEffect',
-    ShoppingCart = '/shopping-cart',
-    RelayExample = '/relay-example',
-    Todo = '/todo',
-    Bookkeeping = '/bookkeeping',
+    AppExample = '/app-example',
+    ShoppingCart = '/app-example/shopping-cart',
+    RelayExample = '/app-example/relay-example',
+    Todo = '/app-example/todo',
+    Bookkeeping = '/app-example/bookkeeping',
 };
 
 export const mainNavItems: NavItem[] = [
@@ -35,27 +36,9 @@ export const mainNavItems: NavItem[] = [
         ),
     },
     {
-        key: NavPathKey.ShoppingCart,
+        key: NavPathKey.AppExample,
         label: (
-            <a href="/shopping-cart">Shopping Cart</a>
-        ),
-    },
-    {
-        key: NavPathKey.RelayExample,
-        label: (
-            <a href="/relay-example">Relay Example</a>
-        ),
-    },
-    {
-        key: NavPathKey.Todo,
-        label: (
-            <a href="/todo">待办事项清单</a>
-        ),
-    },
-    {
-        key: NavPathKey.Bookkeeping,
-        label: (
-            <a href="/bookkeeping">记账本</a>
+            <a href="/app-example">App Example</a>
         ),
     },
 ];
@@ -68,5 +51,23 @@ export const sideNavItems: Record<string, NavItem[]> = {
     [NavPathKey.Hooks]: [
         { key: NavPathKey.useState, label: 'useState' },
         { key: NavPathKey.useEffect, label: 'useEffect' },
+    ],
+    [NavPathKey.AppExample]: [
+        {
+            key: NavPathKey.Todo,
+            label: (<a href="/app-example/todo">待办事项清单</a>),
+        },
+        {
+            key: NavPathKey.Bookkeeping,
+            label: (<a href="/app-example/bookkeeping">记账本</a>),
+        },
+        {
+            key: NavPathKey.ShoppingCart,
+            label: (<a href="/app-example/shopping-cart">购物车</a>),
+        },
+        {
+            key: NavPathKey.RelayExample,
+            label: (<a href="/app-example/relay-example">Relay Example</a>),
+        },
     ],
 };
