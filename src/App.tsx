@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import Posts from './pages/Posts';
 import { ShoppingCart } from './pages/ShoppingCart';
 import RelayExample from './pages/RelayExample';
+import Todo from './pages/Todo';
 import './index.css';
 
 import { Loading } from './components/Loading';
@@ -121,6 +122,7 @@ const AppContent = () => {
                                         <Route path="/hooks" element={<Posts />} />
                                         <Route path="/shopping-cart" element={<ShoppingCart />} />
                                         <Route path="/relay-example" element={<RelayExample />} />
+                                        <Route path="/todo" element={<Todo />} />
                                     </Routes>
                                 </AppErrorBoundary>
                             </Suspense>
