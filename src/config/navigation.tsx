@@ -17,6 +17,7 @@ enum NavPathKey {
     ShoppingCart = '/shopping-cart',
     RelayExample = '/relay-example',
     Todo = '/todo',
+    Bookkeeping = '/bookkeeping',
 };
 
 export const mainNavItems: NavItem[] = [
@@ -49,6 +50,12 @@ export const mainNavItems: NavItem[] = [
         key: NavPathKey.Todo,
         label: (
             <a href="/todo">待办事项清单</a>
+        ),
+    },
+    {
+        key: NavPathKey.Bookkeeping,
+        label: (
+            <a href="/bookkeeping">记账本</a>
         ),
     },
 ];
