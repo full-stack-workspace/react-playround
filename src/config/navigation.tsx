@@ -16,6 +16,7 @@ enum NavPathKey {
     useEffect = '/hooks/useEffect',
     ShoppingCart = '/shopping-cart',
     RelayExample = '/relay-example',
+    Todo = '/todo',
 };
 
 export const mainNavItems: NavItem[] = [
@@ -42,6 +43,12 @@ export const mainNavItems: NavItem[] = [
         key: NavPathKey.RelayExample,
         label: (
             <a href="/relay-example">Relay Example</a>
+        ),
+    },
+    {
+        key: NavPathKey.Todo,
+        label: (
+            <a href="/todo">待办事项清单</a>
         ),
     },
 ];
